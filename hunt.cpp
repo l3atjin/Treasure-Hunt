@@ -63,6 +63,6 @@ int main()
 
 	map map;
 	map.read_in();
-	//map.print_map();
+	map.print_map();
 
 }

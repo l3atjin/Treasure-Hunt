@@ -68,6 +68,13 @@ void map::map_helper()
 
 void map::list_helper()
 {
+	Point junk;
+	junk.col = -1;
+	junk.row = -1;
+	junk.type = 'J';
+	vector<Point> junkVec(size, junk);
+	vector<vector <Point>> temp(size, junkVec);
+	grid = temp;
 	Point in;
 	while (cin >> in.row >> in.col >> in.type)
 	{
@@ -77,19 +84,20 @@ void map::list_helper()
 	{
 		for (int j = 0; j < size; j++)
 		{
-			if (grid[i][j] ==)
+			if (grid[i][j].type == 'J')
 			{
-
+				grid[i][j].row = i;
+				grid[i][j].col = j;
+				grid[i][j].type = '.';
 			}
 		}
-
 	}
 }
 
 
 void map::print_map()
 {
-	cout << "entered print" << endl;
+	cout << "Printing map:" << endl;
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
