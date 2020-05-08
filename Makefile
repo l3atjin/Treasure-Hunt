@@ -282,6 +282,7 @@ help:
 #class.o: class.cpp class.h
 #functions.o: functions.cpp functions.h
 #project0.o: project0.cpp class.h functions.h
+hunt.o: map.h map.cpp 
 #
 # THE COMPILER CAN GENERATE DEPENDENCIES FROM SOURCE CODE
 #

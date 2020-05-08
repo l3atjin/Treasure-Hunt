@@ -7,21 +7,34 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <string>
 
 using namespace std;
+
+struct Point
+{
+	int row, col;
+	char type;
+};
 
 class map
 {
 private:
-	vector<vector <char>> grid;
+	vector<vector <Point>> grid;
+	char mapType;
+	int size;
 	
 
 public:
-	map(){}
+	map();
 
-	void init()
-	{
+	void read_in();
 
-	}
+	void map_helper();
+
+	void list_helper();
+
+	void print_map();
+
 };
 
