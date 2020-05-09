@@ -14,9 +14,25 @@
 
 using namespace std; 
 
-string getMode(int argc, char * argv[]) {
-	bool modeSpecified = false;
-	string mode;
+struct options
+{
+	vector<char> order;
+	bool isCStack;
+	bool isFQueue;
+	bool verbose;
+	bool stats;
+	bool showPath;
+};
+
+options getMode(int argc, char * argv[]) {
+	//bool modeSpecified = false;
+	options gameOptions;
+	gameOptions.order = { 'N','E','S','W' };
+	gameOptions.isCStack = true;
+	gameOptions.isFQueue = true;
+	gameOptions.verbose = false;
+	gameOptions.stats = false;
+	gameOptions.showPath = false;
 
 	// These are used with getopt_long()
 	opterr = true; // Give us help with errors
@@ -34,28 +50,42 @@ string getMode(int argc, char * argv[]) {
 	};
 
 	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
+		string str = optarg;
 		switch (choice) {
 		case 'h':
 			exit(0);
+			break;
 		case 'c':
-			exit(1);
+			if (str == "queue")
+			{
+				gameOptions.isCStack = false;
+			}
+			break;
 		case 'f':
-			exit(1);
+			if (str == "stack")
+			{
+				gameOptions.isFQueue = false;
+			}
+			break;
 		case 'o':
-			exit(1);
+			gameOptions.order = {optarg[0], optarg[1], optarg[2], optarg[3]};
+			break;
 		case 'v':
 			exit(1);
+			break;
 		case 's':
 			exit(1);
+			break;
 		case 'p':
 			exit(1);
+			break;
 		default:
 			cerr << "Error: invalid option" << endl;
 			exit(1);
 		} // switch
 	} // while
 
-	return mode;
+	return gameOptions;
 } // getMode()
 
 

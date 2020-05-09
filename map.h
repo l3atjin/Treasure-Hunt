@@ -16,6 +16,7 @@ struct Point
 	int row, col;
 	char type;
 	bool isDiscovered = false;
+	bool isInvestigated = false;
 };
 
 class map
@@ -27,14 +28,19 @@ private:
 	
 
 public:
+	//constructor
 	map();
 
+	//read map into grid
 	void read_in();
 
+	//helper for Map type
 	void map_helper();
 
+	//helper for List type
 	void list_helper();
 
+	//for testing only: print the grid on cout
 	void print_map();
 
 };

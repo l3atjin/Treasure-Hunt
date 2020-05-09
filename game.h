@@ -16,11 +16,32 @@ class game
 {
 private:
 	vector<char> order;
-	map map;
-	stack<Point> search_box;
-	queue<Point> sail_box;
+	map treasureMap;
+	deque<Point> search_box;
+	deque<Point> sail_box;
 	Point currentPos;
+	Point sailPos;
+	Point searchPos;
 	Point treasurePos;
+	bool isCStack = true;
+	bool isFStack = false;
+
+public:
+	game(map map_in);
+
+	game(map map_in, vector<char> order_in);
+
+	// return true if the treasure is found
+	bool treasureFound();
+
+	void sailInvestigate();
+
+	void searchInvestigate();
+
+	void sailDiscover();
+
+	void searchDiscover();
+
 
 };
 
