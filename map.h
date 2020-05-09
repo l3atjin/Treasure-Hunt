@@ -23,6 +23,8 @@ class map
 {
 private:
 	vector<vector <Point>> grid;
+	Point startPos;
+	Point treasurePos;
 	char mapType;
 	int size;
 	

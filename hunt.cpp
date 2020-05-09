@@ -10,19 +10,11 @@
 #include <iostream>
 #include <algorithm>
 #include <getopt.h>
-#include "map.h"
+//#include "map.h"
+#include "game.h"
 
 using namespace std; 
 
-struct options
-{
-	vector<char> order;
-	bool isCStack;
-	bool isFQueue;
-	bool verbose;
-	bool stats;
-	bool showPath;
-};
 
 options getMode(int argc, char * argv[]) {
 	//bool modeSpecified = false;
@@ -42,7 +34,7 @@ options getMode(int argc, char * argv[]) {
 		{ "help", no_argument, nullptr, 'h' },
 		{ "captain", required_argument, nullptr, 'c' },
 		{ "first-mate", required_argument, nullptr, 'f' },
-		{ "hunt-order", no_argument, nullptr, 'o' },
+		{ "hunt-order", required_argument, nullptr, 'o' },
 		{ "verbose", no_argument, nullptr, 'v' },
 		{ "stats", no_argument, nullptr, 's' },
 		{ "show-path", required_argument, nullptr, 'p' },
@@ -50,19 +42,18 @@ options getMode(int argc, char * argv[]) {
 	};
 
 	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
-		string str = optarg;
 		switch (choice) {
 		case 'h':
 			exit(0);
 			break;
 		case 'c':
-			if (str == "queue")
+			if (optarg[0] == 'q')
 			{
 				gameOptions.isCStack = false;
 			}
 			break;
 		case 'f':
-			if (str == "stack")
+			if (optarg[0] == 's')
 			{
 				gameOptions.isFQueue = false;
 			}
@@ -89,14 +80,17 @@ options getMode(int argc, char * argv[]) {
 } // getMode()
 
 
-int main()
+int main(int argc, char* argv[])
 {
 	std::ios_base::sync_with_stdio(false);
 
-	
-
+	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
-	//map.print_map();
 
+	game hunt(mode, map);
+
+	
+	//map.print_map();
+	return 0;
 }

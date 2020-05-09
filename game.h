@@ -12,6 +12,16 @@
 
 using namespace std;
 
+struct options
+{
+	vector<char> order;
+	bool isCStack;
+	bool isFQueue;
+	bool verbose;
+	bool stats;
+	bool showPath;
+};
+
 class game
 {
 private:
@@ -23,13 +33,12 @@ private:
 	Point sailPos;
 	Point searchPos;
 	Point treasurePos;
-	bool isCStack = true;
-	bool isFStack = false;
+	Point startPos;
+	bool isCStack;
+	bool isFStack;
 
 public:
-	game(map map_in);
-
-	game(map map_in, vector<char> order_in);
+	game(options mode_in, map map_in);
 
 	// return true if the treasure is found
 	bool treasureFound();

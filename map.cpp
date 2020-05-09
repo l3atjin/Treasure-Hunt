@@ -59,6 +59,14 @@ void map::map_helper()
 			in.row = count;
 			in.col = i;
 			in.type = temp[i];
+			if (temp[i] == '@')
+			{
+				startPos = in;
+			}
+			else if (temp[i] == '$')
+			{
+				treasurePos = in;
+			}
 			col.push_back(in);
 		}
 		grid.push_back(col);
@@ -78,6 +86,14 @@ void map::list_helper()
 	Point in;
 	while (cin >> in.row >> in.col >> in.type)
 	{
+		if (in.type == '@')
+		{
+			startPos = in;
+		}
+		else if (in.type == '$')
+		{
+			treasurePos = in;
+		}
 		grid[in.row][in.col] = in;
 	}
 	for (int i = 0; i < size; i++)
@@ -107,5 +123,6 @@ void map::print_map()
 		cout << endl;
 	}
 }
+
 
 
