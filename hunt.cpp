@@ -14,55 +14,59 @@
 
 using namespace std; 
 
+string getMode(int argc, char * argv[]) {
+	bool modeSpecified = false;
+	string mode;
+
+	// These are used with getopt_long()
+	opterr = true; // Give us help with errors
+	int choice;
+	int option_index = 0;
+	option long_options[] = {
+		{ "help", no_argument, nullptr, 'h' },
+		{ "captain", required_argument, nullptr, 'c' },
+		{ "first-mate", required_argument, nullptr, 'f' },
+		{ "hunt-order", no_argument, nullptr, 'o' },
+		{ "verbose", no_argument, nullptr, 'v' },
+		{ "stats", no_argument, nullptr, 's' },
+		{ "show-path", required_argument, nullptr, 'p' },
+		{ nullptr, 0,                 nullptr, '\0' }
+	};
+
+	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
+		switch (choice) {
+		case 'h':
+			exit(0);
+		case 'c':
+			exit(1);
+		case 'f':
+			exit(1);
+		case 'o':
+			exit(1);
+		case 'v':
+			exit(1);
+		case 's':
+			exit(1);
+		case 'p':
+			exit(1);
+		default:
+			cerr << "Error: invalid option" << endl;
+			exit(1);
+		} // switch
+	} // while
+
+	return mode;
+} // getMode()
+
 
 int main()
 {
-	/*string getMode(int argc, char * argv[]) {
-		bool modeSpecified = false;
-		string mode;
+	std::ios_base::sync_with_stdio(false);
 
-		// These are used with getopt_long()
-		opterr = true; // Give us help with errors
-		int choice;
-		int option_index = 0;
-		option long_options[] = {
-			{ "mode", required_argument, nullptr, 'm' },
-			{ "help", no_argument, nullptr, 'h' },
-			{ nullptr, 0,                 nullptr, '\0' }
-		};
-
-		// TODO: Fill in the double quotes, to match the mode and help options.
-		while ((choice = getopt_long(argc, argv, "m:h", long_options, &option_index)) != -1) {
-			switch (choice) {
-			case 'h':
-				printHelp(argv);
-				exit(0);
-
-			case 'm':
-				mode = optarg;
-				if (mode != "resize" && mode != "reserve" && mode != "nosize") {
-					cerr << "Error: invalid mode " << mode << endl;
-					exit(1);
-				} // if
-				modeSpecified = true;
-				break;
-
-			default:
-				cerr << "Error: invalid option" << endl;
-				exit(1);
-			} // switch
-		} // while
-
-		if (!modeSpecified) {
-			cerr << "Error: no mode specified" << endl;
-			exit(1);
-		} // if
-
-		return mode;
-	} // getMode() */
+	
 
 	map map;
 	map.read_in();
-	map.print_map();
+	//map.print_map();
 
 }

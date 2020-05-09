@@ -15,6 +15,7 @@ struct Point
 {
 	int row, col;
 	char type;
+	bool isDiscovered = false;
 };
 
 class map
