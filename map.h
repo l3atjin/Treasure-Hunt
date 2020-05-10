@@ -11,25 +11,35 @@
 
 using namespace std;
 
-struct Point
+class Point
 {
+public:
 	int row, col;
 	char type;
 	bool isDiscovered = false;
 	bool isInvestigated = false;
+
+	Point& operator=(const Point &rhs) {
+		row = rhs.row;
+		col = rhs.col;
+		isDiscovered = rhs.isDiscovered;
+		isInvestigated = rhs.isInvestigated;
+		return *this;
+	}
 };
 
 class map
 {
 private:
 	vector<vector <Point>> grid;
-	Point startPos;
-	Point treasurePos;
 	char mapType;
-	int size;
 	
 
 public:
+	Point startPos;
+	Point treasurePos;
+	int size;
+
 	//constructor
 	map();
 
@@ -44,6 +54,10 @@ public:
 
 	//for testing only: print the grid on cout
 	void print_map();
+
+	Point at(int row, int col);
+
+	bool checkSail(bool isCaptain, Point pos);
 
 };
 

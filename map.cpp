@@ -46,6 +46,11 @@ void map::read_in()
 	}
 }
 
+Point map::at(int row, int col)
+{
+	return grid[row][col];
+}
+
 void map::map_helper()
 {
 	string temp;
@@ -110,6 +115,25 @@ void map::list_helper()
 	}
 }
 
+bool map::checkSail(bool isCaptain, Point pos)
+{
+	if (!pos.isDiscovered && !pos.isInvestigated)
+	{
+		return false;
+	}
+	else if (pos.type != '#')
+	{
+		return false;
+	}
+	else if (!isCaptain && pos.type != 'o')
+	{
+		return false;
+	}
+	return true;
+}
+
+
+
 
 void map::print_map()
 {
@@ -123,6 +147,7 @@ void map::print_map()
 		cout << endl;
 	}
 }
+
 
 
 

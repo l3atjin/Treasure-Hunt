@@ -26,22 +26,25 @@ class game
 {
 private:
 	vector<char> order;
-	map treasureMap;
+	map huntMap;
 	deque<Point> search_box;
 	deque<Point> sail_box;
-	Point currentPos;
 	Point sailPos;
 	Point searchPos;
 	Point treasurePos;
 	Point startPos;
 	bool isCStack;
 	bool isFStack;
+	bool isCaptain = true;
 
 public:
+	// game constructor
 	game(options mode_in, map map_in);
 
 	// return true if the treasure is found
 	bool treasureFound();
+
+	void sail();
 
 	void sailInvestigate();
 
