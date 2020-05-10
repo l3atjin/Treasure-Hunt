@@ -84,11 +84,17 @@ int main(int argc, char* argv[])
 {
 	std::ios_base::sync_with_stdio(false);
 
+	// store options in a struct and initiliaze classes with given options
 	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
-
 	game hunt(mode, map);
+
+	// The main while loop
+	while (!hunt.treasureFound())
+	{
+		hunt.sail();
+	}
 
 	
 	//map.print_map();

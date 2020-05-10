@@ -46,9 +46,9 @@ void map::read_in()
 	}
 }
 
-Point map::at(int row, int col)
+Point* map::at(int row, int col)
 {
-	return grid[row][col];
+	return &grid[row][col];
 }
 
 void map::map_helper()

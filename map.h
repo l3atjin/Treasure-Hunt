@@ -55,7 +55,7 @@ public:
 	//for testing only: print the grid on cout
 	void print_map();
 
-	Point at(int row, int col);
+	Point* at(int row, int col);
 
 	bool checkSail(bool isCaptain, Point pos);
 

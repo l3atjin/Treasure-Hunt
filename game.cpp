@@ -12,6 +12,7 @@ game::game(options mode_in, map map_in)
 	isFStack(mode_in.isFQueue)
 {
 	sail_box.push_back(startPos);
+	sailPos = startPos;
 }
 
 // returns true if the teasure is found
@@ -23,20 +24,19 @@ bool game::treasureFound()
 
 void game::sail()
 {
-	if (!sail_box.empty())
-	{
-		if (isCStack)
-		{
-			sailPos = sail_box.back();
-		}
-		else
-		{
-			sailPos = sail_box.front();
-		}
-	}
 	while (isCaptain) {
 		sailInvestigate();
-
+		if (!sail_box.empty())
+		{
+			if (isCStack)
+			{
+				sailPos = sail_box.back();
+			}
+			else
+			{
+				sailPos = sail_box.front();
+			}
+		}
 	} // while loop
 
 }
@@ -45,48 +45,49 @@ void game::sailInvestigate()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (order[i] == 'N' && sailPos.row != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row - 1, sailPos.col)))
+		if (order[i] == 'N' && sailPos.row != 0 && huntMap.checkSail(isCaptain, *huntMap.at(sailPos.row - 1, sailPos.col)))
 		{
 			if (isCStack)
 			{
-				sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
+				sail_box.push_back(*huntMap.at(sailPos.row - 1, sailPos.col));
+				huntMap.at(sailPos.row - 1, sailPos.col)->isInvestigated = true;
 			}
 			else
 			{
-				sail_box.push_front(huntMap.at(sailPos.row - 1, sailPos.col));
+				sail_box.push_front(*huntMap.at(sailPos.row - 1, sailPos.col));
 			}
 		}
-		else if (order[i] == 'E' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col + 1)))
+		else if (order[i] == 'E' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, *huntMap.at(sailPos.row, sailPos.col + 1)))
 		{
 			if (isCStack)
 			{
-				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
+				sail_box.push_back(*huntMap.at(sailPos.row, sailPos.col + 1));
 			}
 			else
 			{
-				sail_box.push_front(huntMap.at(sailPos.row, sailPos.col + 1));
+				sail_box.push_front(*huntMap.at(sailPos.row, sailPos.col + 1));
 			}
 		}
-		else if (order[i] == 'S' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row + 1, sailPos.col)))
+		else if (order[i] == 'S' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, *huntMap.at(sailPos.row + 1, sailPos.col)))
 		{
 			if (isCStack)
 			{
-				sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
+				sail_box.push_back(*huntMap.at(sailPos.row + 1, sailPos.col));
 			}
 			else
 			{
-				sail_box.push_front(huntMap.at(sailPos.row + 1, sailPos.col));
+				sail_box.push_front(*huntMap.at(sailPos.row + 1, sailPos.col));
 			}
 		}
-		else if (order[i] == 'W' && sailPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col - 1)))
+		else if (order[i] == 'W' && sailPos.col != 0 && huntMap.checkSail(isCaptain, *huntMap.at(sailPos.row, sailPos.col - 1)))
 		{
 			if (isCStack)
 			{
-				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
+				sail_box.push_back(*huntMap.at(sailPos.row, sailPos.col - 1));
 			}
 			else
 			{
-				sail_box.push_front(huntMap.at(sailPos.row, sailPos.col - 1));
+				sail_box.push_front(*huntMap.at(sailPos.row, sailPos.col - 1));
 			}
 		} // end of if statements
 	} // for loop
