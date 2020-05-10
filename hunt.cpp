@@ -94,9 +94,13 @@ int main(int argc, char* argv[])
 	while (!hunt.treasureFound())
 	{
 		hunt.sail();
+		if (!hunt.isCaptain)
+		{
+			hunt.search();
+		}
 	}
 
 	
-	//map.print_map();
+	// map.print_map();
 	return 0;
 }

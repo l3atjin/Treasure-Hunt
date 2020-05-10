@@ -27,17 +27,18 @@ class game
 private:
 	vector<char> order;
 	map huntMap;
-	deque<Point> search_box;
-	deque<Point> sail_box;
-	Point sailPos;
-	Point searchPos;
-	Point treasurePos;
-	Point startPos;
+	deque<Point*> search_box;
+	deque<Point*> sail_box;
+	Point* sailPos;
+	Point* searchPos;
+	Point* treasurePos;
+	Point* startPos;
 	bool isCStack;
 	bool isFStack;
-	bool isCaptain = true;
 
 public:
+
+	bool isCaptain = true;
 	// game constructor
 	game(options mode_in, map map_in);
 
@@ -46,14 +47,10 @@ public:
 
 	void sail();
 
+	void search();
+
 	void sailInvestigate();
 
 	void searchInvestigate();
-
-	void sailDiscover();
-
-	void searchDiscover();
-
-
 };
 

@@ -115,17 +115,17 @@ void map::list_helper()
 	}
 }
 
-bool map::checkSail(bool isCaptain, Point pos)
+bool map::checkSail(bool isCaptain, Point* pos)
 {
-	if (!pos.isDiscovered && !pos.isInvestigated)
+	if (!pos->isDiscovered && !pos->isInvestigated)
 	{
 		return false;
 	}
-	else if (pos.type != '#')
+	else if (pos->type != '#')
 	{
 		return false;
 	}
-	else if (!isCaptain && pos.type != 'o')
+	else if (!isCaptain && pos->type != 'o')
 	{
 		return false;
 	}

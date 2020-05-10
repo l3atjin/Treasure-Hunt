@@ -57,7 +57,7 @@ public:
 
 	Point* at(int row, int col);
 
-	bool checkSail(bool isCaptain, Point pos);
+	bool checkSail(bool isCaptain, Point* pos);
 
 };
 
