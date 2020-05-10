@@ -39,11 +39,10 @@ private:
 public:
 
 	bool isCaptain = true;
+	bool treasureFound = false;
 	// game constructor
 	game(options mode_in, map map_in);
 
-	// return true if the treasure is found
-	bool treasureFound();
 
 	void sail();
 

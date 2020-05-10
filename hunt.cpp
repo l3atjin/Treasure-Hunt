@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 	game hunt(mode, map);
 
 	// The main while loop
-	while (!hunt.treasureFound())
+	while (!hunt.treasureFound)
 	{
 		hunt.sail();
 		if (!hunt.isCaptain)
