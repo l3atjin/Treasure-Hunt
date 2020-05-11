@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 	}
 	cout << "game ended" << endl;
 
-	cout << map.at(4, 4)->type << map.at(4, 4)->row << map.at(4, 4)->col << endl;
+	cout << map.at(4, 4).type << map.at(4, 4).row << map.at(4, 4).col << endl;
 
 	
 
