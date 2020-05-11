@@ -107,7 +107,11 @@ int main(int argc, char* argv[])
 			hunt.search();
 		}
 	}
-	hunt.conTest();
+	//hunt.conTest();
+	if (mode.stats)
+	{
+		hunt.printStats();
+	}
 	if (hunt.treasureFound)
 	{
 		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << endl;

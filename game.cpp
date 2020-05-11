@@ -21,7 +21,14 @@ game::game(options mode_in, map map_in)
 
 void game::printStats()
 {
-
+	cout << "--- STATS ---" << endl;
+	cout << "Starting location: " << startPos.row << "," << startPos.col << endl;
+	cout << "Water locations investigated: " << waterCount << endl;
+	cout << "Land locations investigated: " << landCount << endl;
+	cout << "Went ashore: " << islandCount << endl;
+	cout << "Path length: " << endl;
+	cout << "Treasure location: " << treasurePos.row << "," << treasurePos.col << endl;
+	cout << "--- STATS ---" << endl;
 }
 
 void game::conTest()
@@ -59,6 +66,7 @@ void game::sail()
 			sail_box.pop_front();
 			sailPos.isDiscovered = true;
 		}
+		cout << "Sail position: " << sailPos.row << "," << sailPos.col << endl;
 		sailInvestigate();
 		
 		
@@ -71,6 +79,8 @@ void game::search()
 	{
 		if (searchPos.type == '$')
 		{
+			landCount++;
+			cout << "game won!!!" << endl;
 			treasureFound = true;
 			if (isVerbose)
 			{
@@ -92,6 +102,7 @@ void game::search()
 			landCount++;
 			searchPos = search_box.back();
 			search_box.pop_back();
+			huntMap.at(searchPos.row, searchPos.col).isDiscovered = true;
 			searchPos.isDiscovered = true;
 		}
 		else
@@ -99,8 +110,10 @@ void game::search()
 			landCount++;
 			searchPos = search_box.front();
 			search_box.pop_front();
+			huntMap.at(searchPos.row, searchPos.col).isDiscovered = true;
 			searchPos.isDiscovered = true;
 		}
+		cout << "Search position: " << searchPos.row << "," << searchPos.col << endl;
 		searchInvestigate();
 	}
 }
