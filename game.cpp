@@ -65,6 +65,11 @@ void game::search()
 {
 	while (!isCaptain && !treasureFound)
 	{
+		if (searchPos.type == '$')
+		{
+			treasureFound = true;
+			return;
+		}
 		if (search_box.empty())
 		{
 			isCaptain = true;
@@ -180,13 +185,12 @@ void game::sailInvestigate()
 	{
 		if (order[i] == 'N' && sailPos.row != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row - 1, sailPos.col)))
 		{
-			if (huntMap.at(sailPos.row - 1, sailPos.col).type == 'o')
+			if ((huntMap.at(sailPos.row - 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row - 1, sailPos.col).type == '$' && !landFound))
 			{
-				isCaptain = false;
 				search_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
-				break;
+				landFound = true;
 			}
-			if (isCStack)
+			else if (isCStack)
 			{
 				sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
 				huntMap.at(sailPos.row - 1, sailPos.col).isInvestigated = true;
@@ -197,15 +201,14 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row - 1, sailPos.col).isInvestigated = true;
 			}
 		}
-		else if (order[i] == 'E' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col + 1)))
+		if (order[i] == 'E' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col + 1)))
 		{
-			if (huntMap.at(sailPos.row, sailPos.col + 1).type == 'o')
+			if ((huntMap.at(sailPos.row, sailPos.col + 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col + 1).type == '$' && !landFound))
 			{
-				isCaptain = false;
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
-				break;
+				landFound = true;
 			}
-			if (isCStack)
+			else if (isCStack)
 			{
 				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
 				huntMap.at(sailPos.row, sailPos.col + 1).isInvestigated = true;
@@ -216,15 +219,14 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row, sailPos.col + 1).isInvestigated = true;
 			}
 		}
-		else if (order[i] == 'S' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row + 1, sailPos.col)))
+		if (order[i] == 'S' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row + 1, sailPos.col)))
 		{
-			if (huntMap.at(sailPos.row + 1, sailPos.col).type == 'o')
+			if ((huntMap.at(sailPos.row + 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row + 1, sailPos.col).type == '$' && !landFound))
 			{
-				isCaptain = false;
 				search_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
-				break;
+				landFound = true;
 			}
-			if (isCStack)
+			else if (isCStack)
 			{
 				sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
 				huntMap.at(sailPos.row + 1, sailPos.col).isInvestigated = true;
@@ -235,15 +237,14 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row + 1, sailPos.col).isInvestigated = true;
 			}
 		}
-		else if (order[i] == 'W' && sailPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col - 1)))
+		if (order[i] == 'W' && sailPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col - 1)))
 		{
-			if (huntMap.at(sailPos.row, sailPos.col - 1).type == 'o')
+			if ((huntMap.at(sailPos.row, sailPos.col - 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col - 1).type == '$' && !landFound))
 			{
-				isCaptain = false;
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
-				break;
+				landFound = true;
 			}
-			if (isCStack)
+			else if (isCStack)
 			{
 				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
 				huntMap.at(sailPos.row, sailPos.col - 1).isInvestigated = true;
@@ -255,6 +256,10 @@ void game::sailInvestigate()
 			}
 		} // end of if statements
 	} // for loop
+	if (landFound)
+	{
+		isCaptain = false;
+	}
 }
 
 
