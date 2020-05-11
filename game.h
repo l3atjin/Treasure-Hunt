@@ -35,6 +35,9 @@ private:
 	Point startPos;
 	bool isCStack;
 	bool isFStack;
+	bool isVerbose;
+	bool isStats;
+	bool isPath;
 
 public:
 

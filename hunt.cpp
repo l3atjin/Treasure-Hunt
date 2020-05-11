@@ -44,7 +44,7 @@ options getMode(int argc, char * argv[]) {
 	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
 		switch (choice) {
 		case 'h':
-			exit(0);
+			cout << "Allowed options: " << endl;
 			break;
 		case 'c':
 			if (optarg[0] == 'q')
@@ -62,13 +62,13 @@ options getMode(int argc, char * argv[]) {
 			gameOptions.order = {optarg[0], optarg[1], optarg[2], optarg[3]};
 			break;
 		case 'v':
-			exit(1);
+			gameOptions.verbose = true;
 			break;
 		case 's':
-			exit(1);
+			gameOptions.stats = true;
 			break;
 		case 'p':
-			exit(1);
+			gameOptions.showPath = true;
 			break;
 		default:
 			cerr << "Error: invalid option" << endl;
@@ -88,27 +88,34 @@ int main(int argc, char* argv[])
 	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
-	cout << "game started" << endl;
 	game hunt(mode, map);
+	//hunt.conTest();
 
-	cout << "Start position: " << map.startPos.type << " " << map.startPos.row << " " << map.startPos.col << endl;
-	cout << "Treasure position: " << map.treasurePos.type << " " << map.treasurePos.row << " " << map.treasurePos.col << endl;
-	hunt.conTest();
-
-	map.print_map(); 
+	//map.print_map(); 
 
 	// The main while loop
 	while (!hunt.treasureFound)
 	{
+		if (mode.verbose)
+		{
+			cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << endl;
+		}
 		hunt.sail();
 		if (!hunt.isCaptain)
 		{
 			hunt.search();
 		}
 	}
-	cout << "game ended" << endl;
+	if (hunt.treasureFound)
+	{
+		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << endl;
+	}
+	else {
+		cout << "No treasure found after investigating " << endl;
+	}
+	
 
-	cout << map.at(4, 4).type << map.at(4, 4).row << map.at(4, 4).col << endl;
+	
 
 	
 
