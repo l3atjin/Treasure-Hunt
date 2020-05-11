@@ -117,7 +117,7 @@ void map::list_helper()
 
 bool map::checkSail(bool isCaptain, Point pos)
 {
-	if (pos.isDiscovered || pos.isInvestigated)
+	if (pos.isInvestigated)
 	{
 		return false;
 	}

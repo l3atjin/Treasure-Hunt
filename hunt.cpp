@@ -89,23 +89,25 @@ int main(int argc, char* argv[])
 	map map;
 	map.read_in();
 	game hunt(mode, map);
-	//hunt.conTest();
 
 	//map.print_map(); 
+
+	if (mode.verbose)
+	{
+		cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << endl;
+	}
 
 	// The main while loop
 	while (!hunt.treasureFound)
 	{
-		if (mode.verbose)
-		{
-			cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << endl;
-		}
+		
 		hunt.sail();
 		if (!hunt.isCaptain)
 		{
 			hunt.search();
 		}
 	}
+	hunt.conTest();
 	if (hunt.treasureFound)
 	{
 		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << endl;

@@ -29,10 +29,14 @@ private:
 	map huntMap;
 	deque<Point> search_box;
 	deque<Point> sail_box;
+	vector<char> path = { '@' };
 	Point sailPos;
 	Point searchPos;
 	Point treasurePos;
 	Point startPos;
+	int islandCount = 0;
+	int waterCount = 0;
+	int landCount = 0;
 	bool isCStack;
 	bool isFStack;
 	bool isVerbose;
@@ -56,5 +60,7 @@ public:
 	void searchInvestigate();
 
 	void conTest();
+
+	void printStats();
 };
 
