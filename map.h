@@ -22,6 +22,7 @@ public:
 	Point& operator=(const Point &rhs) {
 		row = rhs.row;
 		col = rhs.col;
+		type = rhs.type;
 		isDiscovered = rhs.isDiscovered;
 		isInvestigated = rhs.isInvestigated;
 		return *this;

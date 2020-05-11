@@ -9,7 +9,7 @@ game::game(options mode_in, map map_in)
 	: order(mode_in.order), huntMap(map_in),
 	treasurePos(&map_in.treasurePos), 
 	startPos(&map_in.startPos), isCStack(mode_in.isCStack), 
-	isFStack(mode_in.isFQueue)
+	isFStack(!mode_in.isFQueue)
 {
 	sail_box.push_back(startPos);
 	sailPos = startPos;
@@ -17,6 +17,23 @@ game::game(options mode_in, map map_in)
 }
 
 // returns true if the teasure is found
+
+void game::conTest()
+{
+	cout << order[0] << " ";
+	cout << order[1] << " ";
+	cout << order[2] << " ";
+	cout << order[3] << " ";
+	cout << endl;
+	cout << endl;
+
+	cout << "Start position: " << startPos->type << " " << startPos->row << " " << startPos->col << endl;
+	cout << "Treasure position: " << treasurePos->type << " " << treasurePos->row << " " << treasurePos->col << endl;
+	cout << "Sail position: " << sailPos->type << " " << sailPos->row << " " << sailPos->col << endl;
+
+
+
+}
 
 void game::sail()
 {
@@ -45,7 +62,7 @@ void game::search()
 {
 	while (!isCaptain && !treasureFound)
 	{
-		if (sail_box.empty())
+		if (search_box.empty())
 		{
 			break;
 		}
@@ -128,10 +145,10 @@ void game::searchInvestigate()
 		}
 		else if (order[i] == 'W' && searchPos->col != 0 && huntMap.checkSail(isCaptain, huntMap.at(searchPos->row, searchPos->col - 1)))
 		{
-			if (huntMap.at(sailPos->row, sailPos->col - 1)->type == '$')
+			if (huntMap.at(searchPos->row, searchPos->col - 1)->type == '$')
 			{
 				treasureFound = true;
-				search_box.push_back(huntMap.at(sailPos->row, sailPos->col - 1));
+				search_box.push_back(huntMap.at(searchPos->row, searchPos->col - 1));
 				break;
 			}
 			if (isFStack)

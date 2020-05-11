@@ -54,9 +54,9 @@ Point* map::at(int row, int col)
 void map::map_helper()
 {
 	string temp;
+	int count = 0;
 	while (getline(cin, temp))
 	{
-		int count = 0;
 		vector <Point> col;
 		for (unsigned int i = 0; i < temp.size(); i++)
 		{
@@ -142,7 +142,7 @@ void map::print_map()
 	{
 		for (int j = 0; j < size; j++)
 		{
-			cout << grid[i][j].type << " ";
+			cout << grid[i][j].row << grid[i][j].col << grid[i][j].type << " ";
 		}
 		cout << endl;
 	}

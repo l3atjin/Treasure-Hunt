@@ -51,5 +51,7 @@ public:
 	void sailInvestigate();
 
 	void searchInvestigate();
+
+	void conTest();
 };
 

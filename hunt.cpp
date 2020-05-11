@@ -88,7 +88,14 @@ int main(int argc, char* argv[])
 	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
+	cout << "game started" << endl;
 	game hunt(mode, map);
+
+	cout << "Start position: " << map.startPos.type << " " << map.startPos.row << " " << map.startPos.col << endl;
+	cout << "Treasure position: " << map.treasurePos.type << " " << map.treasurePos.row << " " << map.treasurePos.col << endl;
+	hunt.conTest();
+
+	map.print_map(); 
 
 	// The main while loop
 	while (!hunt.treasureFound)
@@ -99,8 +106,11 @@ int main(int argc, char* argv[])
 			hunt.search();
 		}
 	}
+	cout << "game ended" << endl;
+
+	cout << map.at(4, 4)->type << map.at(4, 4)->row << map.at(4, 4)->col << endl;
 
 	
-	// map.print_map();
+
 	return 0;
 }
