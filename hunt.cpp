@@ -82,7 +82,7 @@ options getMode(int argc, char * argv[]) {
 
 int main(int argc, char* argv[])
 {
-	//std::ios_base::sync_with_stdio(false);
+	std::ios_base::sync_with_stdio(false);
 
 	// store options in a struct and initiliaze classes with given options
 	options mode = getMode(argc, argv);
