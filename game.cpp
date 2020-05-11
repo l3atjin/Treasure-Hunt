@@ -82,9 +82,18 @@ void game::sail()
 
 void game::search()
 {
-	int count = 0;
 	while (!isCaptain && !treasureFound)
 	{
+		if (treasureFound || (searchPos.row == treasurePos.row && searchPos.col == treasurePos.col))
+		{
+			cout << "	Total land tiles discovered: " << landCount << "\n";
+			if (isVerbose)
+			{
+				cout << "Searching island... party found treasure at " << treasurePos.row << "," << treasurePos.col << "." << "\n";
+			}
+			treasureFound = true;
+			return;
+		}
 		searchInvestigate();
 		if (search_box.empty())
 		{
@@ -100,7 +109,6 @@ void game::search()
 			landCount++;
 			searchPos = search_box.back();
 			search_box.pop_back();
-			num++;
 		}
 		else
 		{
@@ -108,12 +116,8 @@ void game::search()
 			searchPos = search_box.front();
 			search_box.pop_front();
 		}
-		if (treasureFound)
+		if (treasureFound || (searchPos.row == treasurePos.row && searchPos.col == treasurePos.col))
 		{
-			if (count == 0)
-			{
-				landCount++;
-			}
 			cout << "	Total land tiles discovered: " << landCount << "\n";
 			if (isVerbose)
 			{
@@ -125,7 +129,6 @@ void game::search()
 		
 		cout << "	Search position: " << searchPos.row << "," << searchPos.col << "\n";
 		cout << "	Land tiles discovered: " << landCount << "\n";
-		count++;
 	}
 }
 
@@ -257,6 +260,18 @@ void game::sailInvestigate()
 			cout << "Went ashore at: " << search_box.back().row << "," << search_box.back().col << "\n";
 		}
 		isCaptain = false;
+		if (isFStack)
+		{
+			landCount++;
+			searchPos = search_box.back();
+			search_box.pop_back();
+		}
+		else
+		{
+			landCount++;
+			searchPos = search_box.front();
+			search_box.pop_front();
+		}
 	}
 }
 
