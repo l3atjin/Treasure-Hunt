@@ -187,9 +187,12 @@ void game::sailInvestigate()
 				search_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
 				landFound = true;
 			}
-			sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
-			huntMap.at(sailPos.row - 1, sailPos.col).isInvestigated = true;
-			path.push_back('N');
+			else
+			{
+				sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
+				huntMap.at(sailPos.row - 1, sailPos.col).isInvestigated = true;
+				path.push_back('N');
+			}
 		}
 		if (order[i] == 'E' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col + 1)))
 		{
@@ -198,9 +201,12 @@ void game::sailInvestigate()
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
 				landFound = true;
 			}
-			sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
-			huntMap.at(sailPos.row, sailPos.col + 1).isInvestigated = true;
-			path.push_back('E');
+			else
+			{
+				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
+				huntMap.at(sailPos.row, sailPos.col + 1).isInvestigated = true;
+				path.push_back('E');
+			}
 		}
 		if (order[i] == 'S' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row + 1, sailPos.col)))
 		{
@@ -209,9 +215,12 @@ void game::sailInvestigate()
 				search_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
 				landFound = true;
 			}
-			sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
-			huntMap.at(sailPos.row + 1, sailPos.col).isInvestigated = true;
-			path.push_back('S');
+			else
+			{
+				sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
+				huntMap.at(sailPos.row + 1, sailPos.col).isInvestigated = true;
+				path.push_back('S');
+			}
 		}
 		if (order[i] == 'W' && sailPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col - 1)))
 		{
@@ -220,9 +229,13 @@ void game::sailInvestigate()
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
 				landFound = true;
 			}
-			sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
-			huntMap.at(sailPos.row, sailPos.col - 1).isInvestigated = true;
-			path.push_back('W');
+			else 
+			{
+				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
+				huntMap.at(sailPos.row, sailPos.col - 1).isInvestigated = true;
+				path.push_back('W');
+			}
+			
 		} // end of if statements
 	} // for loop
 	if (landFound)
