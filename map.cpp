@@ -125,7 +125,7 @@ bool map::checkSail(bool isCaptain, Point pos)
 	{
 		return false;
 	}
-	else if (!isCaptain && pos.type != 'o')
+	else if (!isCaptain && pos.type != 'o' && pos.type != '$')
 	{
 		return false;
 	}

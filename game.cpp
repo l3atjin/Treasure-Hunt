@@ -40,7 +40,7 @@ void game::sail()
 	while (isCaptain && !treasureFound) {
 		if (sail_box.empty())
 		{
-			break;
+			return;
 		}
 		if (isCStack)
 		{
@@ -73,7 +73,7 @@ void game::search()
 		if (search_box.empty())
 		{
 			isCaptain = true;
-			break;
+			return;
 		}
 		if (isFStack)
 		{
