@@ -44,7 +44,7 @@ options getMode(int argc, char * argv[]) {
 	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
 		switch (choice) {
 		case 'h':
-			cout << "Allowed options: " << endl;
+			cout << "Allowed options: " << "\n";
 			break;
 		case 'c':
 			if (optarg[0] == 'q')
@@ -71,7 +71,7 @@ options getMode(int argc, char * argv[]) {
 			gameOptions.showPath = true;
 			break;
 		default:
-			cerr << "Error: invalid option" << endl;
+			cout << "Error: invalid option" << "\n";
 			exit(1);
 		} // switch
 	} // while
@@ -82,7 +82,7 @@ options getMode(int argc, char * argv[]) {
 
 int main(int argc, char* argv[])
 {
-	std::ios_base::sync_with_stdio(false);
+	//std::ios_base::sync_with_stdio(false);
 
 	// store options in a struct and initiliaze classes with given options
 	options mode = getMode(argc, argv);
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 
 	if (mode.verbose)
 	{
-		cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << endl;
+		cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << "\n";
 	}
 
 	// The main while loop
@@ -114,10 +114,10 @@ int main(int argc, char* argv[])
 	}
 	if (hunt.treasureFound)
 	{
-		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << endl;
+		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << "\n";
 	}
 	else {
-		cout << "No treasure found after investigating " << endl;
+		cout << "No treasure found after investigating " << hunt.waterCount + hunt.landCount - 1 << " locations." << "\n";
 	}
 	
 

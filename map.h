@@ -16,14 +16,14 @@ class Point
 public:
 	int row, col;
 	char type;
-	bool isDiscovered = false;
+	//bool isDiscovered = false;
 	bool isInvestigated = false;
 
 	Point& operator=(const Point &rhs) {
 		row = rhs.row;
 		col = rhs.col;
 		type = rhs.type;
-		isDiscovered = rhs.isDiscovered;
+		//isDiscovered = rhs.isDiscovered;
 		isInvestigated = rhs.isInvestigated;
 		return *this;
 	}

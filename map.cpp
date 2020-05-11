@@ -137,14 +137,14 @@ bool map::checkSail(bool isCaptain, Point pos)
 
 void map::print_map()
 {
-	cout << "Printing map:" << endl;
+	cout << "Printing map:" << "\n";
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
 		{
 			cout << grid[i][j].row << grid[i][j].col << grid[i][j].type << " ";
 		}
-		cout << endl;
+		cout << "\n";
 	}
 }
 
