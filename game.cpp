@@ -14,7 +14,7 @@ game::game(options mode_in, map& map_in)
 {
 	sailPos = startPos;
 	sailPos.track = '@';
-	sail_box.push_back(startPos);
+	huntMap.at(sailPos.row, sailPos.col).track = '@';
 }
 
 // returns true if the teasure is found
@@ -23,7 +23,7 @@ void game::printStats()
 {
 	cout << "--- STATS ---" << "\n";
 	cout << "Starting location: " << startPos.row << "," << startPos.col << "\n";
-	cout << "Water locations investigated: " << waterCount - 1 << "\n";
+	cout << "Water locations investigated: " << waterCount << "\n";
 	cout << "Land locations investigated: " << landCount << "\n";
 	cout << "Went ashore: " << islandCount << "\n";
 	cout << "Path length: " << "\n";
@@ -52,6 +52,11 @@ void game::print_map()
 void game::sail()
 {
 	while (isCaptain && !treasureFound) {
+		sailInvestigate();
+		if (!isCaptain)
+		{
+			return;
+		}
 		if (sail_box.empty())
 		{
 			cout << "Treasure hund failed" << "\n";
@@ -69,17 +74,18 @@ void game::sail()
 			sailPos = sail_box.front();
 			sail_box.pop_front();
 		}
-		cout << "Sail position: " << sailPos.row << "," << sailPos.col << "\n";
-		sailInvestigate();
-		
+		cout << "	Sail position: " << sailPos.row << "," << sailPos.col << "\n";
+		cout << "	Water tiles discovered: " << waterCount << "\n";
 		
 	} // while loop
 }
 
 void game::search()
 {
+	int count = 0;
 	while (!isCaptain && !treasureFound)
 	{
+		searchInvestigate();
 		if (search_box.empty())
 		{
 			isCaptain = true;
@@ -94,6 +100,7 @@ void game::search()
 			landCount++;
 			searchPos = search_box.back();
 			search_box.pop_back();
+			num++;
 		}
 		else
 		{
@@ -101,10 +108,13 @@ void game::search()
 			searchPos = search_box.front();
 			search_box.pop_front();
 		}
-		cout << "Search position: " << searchPos.row << "," << searchPos.col << "\n";
-		searchInvestigate();
 		if (treasureFound)
 		{
+			if (count == 0)
+			{
+				landCount++;
+			}
+			cout << "	Total land tiles discovered: " << landCount << "\n";
 			if (isVerbose)
 			{
 				cout << "Searching island... party found treasure at " << treasurePos.row << "," << treasurePos.col << "." << "\n";
@@ -112,6 +122,10 @@ void game::search()
 			treasureFound = true;
 			return;
 		}
+		
+		cout << "	Search position: " << searchPos.row << "," << searchPos.col << "\n";
+		cout << "	Land tiles discovered: " << landCount << "\n";
+		count++;
 	}
 }
 
@@ -178,6 +192,8 @@ void game::sailInvestigate()
 			if ((huntMap.at(sailPos.row - 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row - 1, sailPos.col).type == '$' && !landFound))
 			{
 				search_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
+				searchPos = huntMap.at(sailPos.row - 1, sailPos.col);
+				huntMap.at(sailPos.row - 1, sailPos.col).track = 'N';
 				landFound = true;
 			}
 			else
@@ -191,6 +207,8 @@ void game::sailInvestigate()
 			if ((huntMap.at(sailPos.row, sailPos.col + 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col + 1).type == '$' && !landFound))
 			{
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
+				searchPos = huntMap.at(sailPos.row, sailPos.col + 1);
+				huntMap.at(sailPos.row, sailPos.col + 1).track = 'E';
 				landFound = true;
 			}
 			else
@@ -204,6 +222,8 @@ void game::sailInvestigate()
 			if ((huntMap.at(sailPos.row + 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row + 1, sailPos.col).type == '$' && !landFound))
 			{
 				search_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
+				searchPos = huntMap.at(sailPos.row + 1, sailPos.col);
+				huntMap.at(sailPos.row + 1, sailPos.col).track = 'S';
 				landFound = true;
 			}
 			else
@@ -217,6 +237,8 @@ void game::sailInvestigate()
 			if ((huntMap.at(sailPos.row, sailPos.col - 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col - 1).type == '$' && !landFound))
 			{
 				search_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
+				searchPos = huntMap.at(sailPos.row, sailPos.col - 1);
+				huntMap.at(sailPos.row, sailPos.col - 1).track = 'W';
 				landFound = true;
 			}
 			else 

@@ -41,8 +41,9 @@ private:
 
 public:
 	int islandCount = 0;
-	int waterCount = 0;
+	int waterCount = 1;
 	int landCount = 0;
+	int num = 0;
 	bool isCaptain = true;
 	bool treasureFound = false;
 	// game constructor

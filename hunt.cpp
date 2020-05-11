@@ -124,6 +124,8 @@ int main(int argc, char* argv[])
 	cout << "\n";
 
 	hunt.print_map(); 
+
+	cout << hunt.num << endl;
 	
 
 	
