@@ -16,15 +16,13 @@ class Point
 public:
 	int row, col;
 	char type;
-	//bool isDiscovered = false;
-	bool isInvestigated = false;
+	char track = 'M';
 
 	Point& operator=(const Point &rhs) {
 		row = rhs.row;
 		col = rhs.col;
 		type = rhs.type;
-		//isDiscovered = rhs.isDiscovered;
-		isInvestigated = rhs.isInvestigated;
+		track = rhs.track;
 		return *this;
 	}
 };
@@ -32,11 +30,11 @@ public:
 class map
 {
 private:
-	vector<vector <Point>> grid;
 	char mapType;
 	
 
 public:
+	vector<vector <Point>> grid;
 	Point startPos;
 	Point treasurePos;
 	int size;

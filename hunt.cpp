@@ -90,7 +90,6 @@ int main(int argc, char* argv[])
 	map.read_in();
 	game hunt(mode, map);
 
-	//map.print_map(); 
 
 	if (mode.verbose)
 	{
@@ -119,8 +118,12 @@ int main(int argc, char* argv[])
 	else {
 		cout << "No treasure found after investigating " << hunt.waterCount + hunt.landCount - 1 << " locations." << "\n";
 	}
-	
 
+	map.print_map();
+
+	cout << "\n";
+
+	hunt.print_map(); 
 	
 
 	

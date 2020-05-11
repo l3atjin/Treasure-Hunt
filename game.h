@@ -46,8 +46,9 @@ public:
 	bool isCaptain = true;
 	bool treasureFound = false;
 	// game constructor
-	game(options mode_in, map map_in);
+	game(options mode_in, map& map_in);
 
+	void print_map();
 
 	void sail();
 
