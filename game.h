@@ -67,6 +67,6 @@ public:
 
 	void printStats();
 
-	void path_helper(Point &currentPos);
+	void path_helper();
 };
 

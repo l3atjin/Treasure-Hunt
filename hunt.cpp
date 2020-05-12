@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 	// The main while loop
 	while (!hunt.treasureFound &&!hunt.deadend)
 	{
-		cout << "entered main loop" << endl;
+		//cout << "entered main loop" << endl;
 		hunt.sail();
 		if (hunt.deadend)
 		{
@@ -180,6 +180,10 @@ int main(int argc, char* argv[])
 	}
 	if (hunt.treasureFound)
 	{
+		if (!mode.stats && !mode.showMap && !mode.showList)
+		{
+			hunt.path_helper();
+		}
 		cout << "Treasure found at " << map.treasurePos.row << "," << map.treasurePos.col << " with path length " << hunt.path.size() - 1 << "." << "\n";
 	}
 	else {

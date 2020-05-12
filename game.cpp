@@ -29,16 +29,16 @@ void game::printStats()
 	cout << "Went ashore: " << islandCount << "\n";
 	if (!deadend)
 	{
-		Point currentPos = huntMap.at(treasurePos.row, treasurePos.col);
-		path_helper(currentPos);
+		path_helper();
 		cout << "Path length: " << path.size() - 1 << "\n";
 		cout << "Treasure location: " << treasurePos.row << "," << treasurePos.col << "\n";
 	}
 	cout << "--- STATS ---" << "\n";
 }
 
-void game::path_helper(Point &currentPos)
+void game::path_helper()
 {
+	Point currentPos = huntMap.at(treasurePos.row, treasurePos.col);
 	int count = 0;
 	path.push_back(currentPos);
 	while (currentPos.type != '@')
@@ -101,8 +101,7 @@ void game::print_path()
 {
 	if (!isStats)
 	{
-		Point currentPos = huntMap.at(treasurePos.row, treasurePos.col);
-		path_helper(currentPos);	
+		path_helper();	
 	}
 	//cout << path.size() << "\n";
 	if (showMap)
@@ -362,12 +361,12 @@ void game::sailInvestigate()
 	} // for loop
 	if (landFound)
 	{
+		islandCount++;
+		isCaptain = false;
 		if (isVerbose)
 		{
-			islandCount++;
 			cout << "Went ashore at: " << search_box.back().row << "," << search_box.back().col << "\n";
 		}
-		isCaptain = false;
 		if (isFStack)
 		{
 			landCount++;
