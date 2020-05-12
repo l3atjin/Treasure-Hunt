@@ -52,7 +52,7 @@ public:
 	void list_helper();
 
 	//for testing only: print the grid on cout
-	void print_map();
+	//void print_map();
 
 	Point& at(int row, int col);
 

@@ -135,7 +135,7 @@ bool map::checkSail(bool isCaptain, Point pos)
 
 
 
-void map::print_map()
+/*void map::print_map()
 {
 	cout << "Printing map:" << "\n";
 	for (int i = 0; i < size; i++)
@@ -146,7 +146,7 @@ void map::print_map()
 		}
 		cout << "\n";
 	}
-}
+}*/
 
 
 

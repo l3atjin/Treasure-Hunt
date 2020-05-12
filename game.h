@@ -19,7 +19,8 @@ struct options
 	bool isFQueue;
 	bool verbose;
 	bool stats;
-	bool showPath;
+	bool showMap;
+	bool showList;
 };
 
 class game
@@ -37,9 +38,11 @@ private:
 	bool isFStack;
 	bool isVerbose;
 	bool isStats;
-	bool isPath;
+	bool showMap;
+	bool showList;
 
 public:
+	vector<Point> path;
 	int islandCount = 0;
 	int waterCount = 1;
 	int landCount = 0;
@@ -59,8 +62,10 @@ public:
 
 	void searchInvestigate();
 
-	void conTest();
+	void print_path();
 
 	void printStats();
+
+	void path_helper(Point &currentPos);
 };
 

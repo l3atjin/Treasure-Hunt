@@ -1,5 +1,9 @@
 ## EECS 281 Advanced Makefile
 
+PATH := /usr/um/gcc-6.2.0/bin:$(PATH)
+LD_LIBRARY_PATH := /usr/um/gcc-6.2.0/lib64
+LD_RUN_PATH := /usr/um/gcc-6.2.0/lib64
+
 # How to use this Makefile...
 ###################
 ###################
