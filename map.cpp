@@ -53,11 +53,13 @@ Point& map::at(int row, int col)
 
 void map::map_helper()
 {
+	grid.reserve(size + 1);
 	string temp;
 	int count = 0;
 	while (getline(cin, temp))
 	{
 		vector <Point> col;
+		col.reserve(size + 1);
 		for (unsigned int i = 0; i < temp.size(); i++)
 		{
 			Point in;
@@ -86,7 +88,9 @@ void map::list_helper()
 	junk.row = -1;
 	junk.type = 'J';
 	vector<Point> junkVec(size, junk);
+	junkVec.reserve(size + 1);
 	vector<vector <Point>> temp(size, junkVec);
+	temp.reserve(size + 1);
 	grid = temp;
 	Point in;
 	while (cin >> in.row >> in.col >> in.type)
