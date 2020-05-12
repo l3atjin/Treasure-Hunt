@@ -161,6 +161,7 @@ void game::sail()
 		if (sail_box.empty())
 		{
 			cout << "Treasure hund failed" << "\n";
+			deadend = true;
 			return;
 		}
 		if (isCStack)

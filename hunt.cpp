@@ -13,19 +13,19 @@
 //#include "map.h"
 #include "game.h"
 
-using namespace std; 
+using namespace std;
 
 
 options getMode(int argc, char * argv[]) {
 	//bool modeSpecified = false;
 	options gameOptions;
-	gameOptions.order = { 'S','W','E','N' };
+	gameOptions.order = { 'N','E','S','W' };
 	gameOptions.isCStack = true;
-	gameOptions.isFQueue = false;
+	gameOptions.isFQueue = true;
 	gameOptions.verbose = false;
 	gameOptions.stats = false;
-	gameOptions.showMap = true;
-	gameOptions.showList = true;
+	gameOptions.showMap = false;
+	gameOptions.showList = false;
 	string str;
 	int count = 0;
 	// These are used with getopt_long()
@@ -43,60 +43,81 @@ options getMode(int argc, char * argv[]) {
 		{ nullptr, 0,                 nullptr, '\0' }
 	};
 	while ((choice = getopt_long(argc, argv, "hc:f:o:vsp:", long_options, &option_index)) != -1) {
-		
+
 		switch (choice) {
-		
+
 		case 'h':
+		{
 			cout << "Allowed options: " << "\n";
 			exit(1);
+			break;
+		}
+
 		case 'c':
+		{
 			str = optarg;
-			if (str != "queue" || str != "stack")
+			if (str != "queue" && str != "stack")
 			{
+				cout << "Wrong captain input" << "\n";
 				exit(1);
-			}
-			else if (optarg[0] == 'q')
+			}	
+			else if (str == "queue")
 			{
 				gameOptions.isCStack = false;
 			}
 			break;
+		}
 		case 'f':
+		{
 			str = optarg;
-			if (str != "queue" || str != "stack")
+			if (str != "stack" && str != "queue")
 			{
+				cout << "Wrong first-mate input" << "\n";
 				exit(1);
 			}
-			else if (optarg[0] == 's')
+			else if (str == "stack")
 			{
 				gameOptions.isFQueue = false;
 			}
 			break;
+		}
 		case 'o':
+		{
 			str = optarg;
 			if (str.length() != 4)
 			{
+				cout << "Wrong order" << "\n";
 				exit(1);
 			}
-			/*else if(str.find('N') == string::npos || str.find('E') == string::npos || str.find('S') == string::npos || str.find('W') == -string::npos)
+			else if (str.find('N') == string::npos || str.find('E') == string::npos || str.find('S') == string::npos || str.find('W') == string::npos)
 			{
+				cout << "Invalid order" << "\n";
 				exit(1);
-			}*/
-			gameOptions.order = {optarg[0], optarg[1], optarg[2], optarg[3]};
+			}
+			gameOptions.order = { str[0], str[1], str[2], str[3] };
 			break;
+		}
 		case 'v':
+		{
 			gameOptions.verbose = true;
 			break;
+		}
 		case 's':
+		{
 			gameOptions.stats = true;
 			break;
+		}
 		case 'p':
+		{
 			if (count > 0)
 			{
+				cout << "Repeated path argument" << "\n";
 				exit(1);
 			}
 			str = optarg;
-			if (str != "M" || str != "L")
+			if (str != "M" && str != "L")
 			{
+				cout << "Wrong path argument" << "\n";
 				exit(1);
 			}
 			if (str == "M")
@@ -109,6 +130,7 @@ options getMode(int argc, char * argv[]) {
 			}
 			count++;
 			break;
+		}
 		} // switch
 	} // while
 
@@ -124,7 +146,7 @@ int main(int argc, char* argv[])
 	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
-	cout << mode.order[0] << mode.order[1] << mode.order[2] << mode.order[3] << endl;
+	//cout << mode.order[0] << mode.order[1] << mode.order[2] << mode.order[3] << "\n";
 	game hunt(mode, map);
 
 
@@ -134,7 +156,7 @@ int main(int argc, char* argv[])
 	}
 	
 	// The main while loop
-	while (!hunt.treasureFound)
+	while (!hunt.treasureFound && !hunt.deadend)
 	{
 		
 		hunt.sail();
@@ -148,7 +170,7 @@ int main(int argc, char* argv[])
 	{
 		hunt.printStats();
 	}
-	if (mode.showMap || mode.showList)
+	if ((mode.showMap || mode.showList) && hunt.treasureFound)
 	{
 		hunt.print_path();
 	}
@@ -162,7 +184,7 @@ int main(int argc, char* argv[])
 
 	//cout << "\n";
 
-	hunt.print_map(); 
+	//hunt.print_map(); 
 	//hunt.print_path();
 	return 0;
 }

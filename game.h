@@ -49,6 +49,7 @@ public:
 	int num = 0;
 	bool isCaptain = true;
 	bool treasureFound = false;
+	bool deadend = false;
 	// game constructor
 	game(options mode_in, map& map_in);
 
