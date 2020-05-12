@@ -5,7 +5,7 @@
 using namespace std;
 
 // game constructor
-game::game(options mode_in, map& map_in)
+game::game(options& mode_in, map& map_in)
 	: order(mode_in.order), huntMap(map_in),
 	treasurePos(map_in.treasurePos), 
 	startPos(map_in.startPos), isCStack(mode_in.isCStack), 
@@ -119,15 +119,16 @@ void game::print_path()
 	if (showList)
 	{
 		cout << "Sail:" << "\n";
-		for (size_t i = path.size(); i > 0; i--)
+		for (size_t i = path.size() - 1; i > 0; i--)
 		{
 			if (path[i].type == '.' || path[i].type == '@')
 			{
 				cout << path[i].row << "," << path[i].col << "\n";
 			}
 		}
+		// might wanna check
 		cout << "Search:" << "\n";
-		for (size_t i = path.size(); i != 0; i--)
+		for (size_t i = path.size() - 1; i > 0; i--)
 		{
 			if (path[i].type == 'o' || path[i].type == '$')
 			{
@@ -162,7 +163,10 @@ void game::sail()
 		}
 		if (sail_box.empty())
 		{
-			cout << "Treasure hunt failed" << "\n";
+			if (isVerbose)
+			{
+				cout << "Treasure hunt failed" << "\n";
+			}
 			deadend = true;
 			return;
 		}
@@ -187,6 +191,7 @@ void game::sail()
 
 void game::search()
 {
+	// declare deque here
 	while (!isCaptain && !treasureFound)
 	{
 		if (treasureFound || (searchPos.row == treasurePos.row && searchPos.col == treasurePos.col))
@@ -306,7 +311,7 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row - 1, sailPos.col).track = 'n';
 				landFound = true;
 			}
-			else
+			else if(huntMap.at(sailPos.row - 1, sailPos.col).type == '.')
 			{
 				sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
 				huntMap.at(sailPos.row - 1, sailPos.col).track = 'n';
@@ -321,7 +326,7 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row, sailPos.col + 1).track = 'e';
 				landFound = true;
 			}
-			else
+			else if(huntMap.at(sailPos.row, sailPos.col + 1).type == '.')
 			{
 				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
 				huntMap.at(sailPos.row, sailPos.col + 1).track = 'e';
@@ -336,7 +341,7 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row + 1, sailPos.col).track = 's';
 				landFound = true;
 			}
-			else
+			else if(huntMap.at(sailPos.row + 1, sailPos.col).type == '.')
 			{
 				sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
 				huntMap.at(sailPos.row + 1, sailPos.col).track = 's';
@@ -351,7 +356,7 @@ void game::sailInvestigate()
 				huntMap.at(sailPos.row, sailPos.col - 1).track = 'w';
 				landFound = true;
 			}
-			else 
+			else if(huntMap.at(sailPos.row, sailPos.col - 1).type == '.')
 			{
 				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
 				huntMap.at(sailPos.row, sailPos.col - 1).track = 'w';

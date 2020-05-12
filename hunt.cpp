@@ -131,6 +131,10 @@ options getMode(int argc, char * argv[]) {
 			count++;
 			break;
 		}
+		default:
+			cerr << "Error: invalid option" << endl;
+			exit(1);
+		 // switch
 		} // switch
 	} // while
 

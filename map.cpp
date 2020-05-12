@@ -19,7 +19,7 @@ void map::read_in()
 {
 	string temp;
 	while (getline(cin, temp)) {
-		if (temp[0] == '#' && temp[1] == ' ')
+		if (temp[0] == '#')
 		{
 			continue;
 		}

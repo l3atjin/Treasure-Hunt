@@ -46,12 +46,11 @@ public:
 	int islandCount = 0;
 	int waterCount = 1;
 	int landCount = 0;
-	int num = 0;
 	bool isCaptain = true;
 	bool treasureFound = false;
 	bool deadend = false;
 	// game constructor
-	game(options mode_in, map& map_in);
+	game(options& mode_in, map& map_in);
 
 	void print_map();
 
