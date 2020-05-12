@@ -19,7 +19,7 @@ using namespace std;
 options getMode(int argc, char * argv[]) {
 	//bool modeSpecified = false;
 	options gameOptions;
-	gameOptions.order = { 'N','E','S','W' };
+	gameOptions.order = { 'n','e','s','w' };
 	gameOptions.isCStack = true;
 	gameOptions.isFQueue = true;
 	gameOptions.verbose = false;
@@ -89,7 +89,7 @@ options getMode(int argc, char * argv[]) {
 				cout << "Wrong order" << "\n";
 				exit(1);
 			}
-			else if (str.find('N') == string::npos || str.find('E') == string::npos || str.find('S') == string::npos || str.find('W') == string::npos)
+			else if (str.find('n') == string::npos || str.find('e') == string::npos || str.find('s') == string::npos || str.find('w') == string::npos)
 			{
 				cout << "Invalid order" << "\n";
 				exit(1);
@@ -140,7 +140,7 @@ options getMode(int argc, char * argv[]) {
 
 int main(int argc, char* argv[])
 {
-	// std::ios_base::sync_with_stdio(false);
+	std::ios_base::sync_with_stdio(false);
 
 	// store options in a struct and initiliaze classes with given options
 	options mode = getMode(argc, argv);
@@ -156,10 +156,14 @@ int main(int argc, char* argv[])
 	}
 	
 	// The main while loop
-	while (!hunt.treasureFound && !hunt.deadend)
+	while (!hunt.treasureFound &&!hunt.deadend)
 	{
-		
+		cout << "entered main loop" << endl;
 		hunt.sail();
+		if (hunt.deadend)
+		{
+			break;
+		}
 		if (!hunt.isCaptain)
 		{
 			hunt.search();
