@@ -5,20 +5,19 @@
 using namespace std;
 
 // game constructor
-game::game(options& mode_in, map& map_in)
-	: order(mode_in.order), huntMap(map_in),
-	grid(huntMap.grid),
-	treasurePos(map_in.treasurePos),
-	startPos(map_in.startPos), isCStack(mode_in.isCStack),
+game::game(options& mode_in, vector<vector <Point>>& grid_in, Position startPos_in, Position treasurePos_in, int size_in)
+	: order(mode_in.order), grid(grid_in),
+	treasurePos(treasurePos_in),
+	startPos(startPos_in), isCStack(mode_in.isCStack),
 	isFStack(!mode_in.isFQueue), isVerbose(mode_in.verbose),
-	isStats(mode_in.stats), showMap(mode_in.showMap), showList(mode_in.showList)
+	isStats(mode_in.stats), showMap(mode_in.showMap), showList(mode_in.showList), size(size_in)
 {
 	//treasurePos.track = '$';
 	//grid[treasurePos.row][treasurePos.col].track = '$';
-	huntMap.at(treasurePos.row, treasurePos.col).track = '$';
+	//.at(treasurePos.row, treasurePos.col).track = '$';
 	sailPos = startPos;
 	grid[sailPos.row][sailPos.col].track = '@';
-	huntMap.at(sailPos.row, sailPos.col).track = '@';
+	//at(sailPos.row, sailPos.col).track = '@';
 }
 
 // returns true if the teasure is found
@@ -120,9 +119,9 @@ void game::print_path()
 	if (showMap)
 	{
 		grid[treasurePos.row][treasurePos.col].type = 'X';
-		for (int i = 0; i < huntMap.size; i++)
+		for (int i = 0; i < size; i++)
 		{
-			for (int j = 0; j < huntMap.size; j++)
+			for (int j = 0; j < size; j++)
 			{
 				cout << grid[i][j].type;
 			}
@@ -156,9 +155,9 @@ void game::print_path()
 void game::print_map()
 {
 	cout << "Printing map:" << "\n";
-	for (int i = 0; i < huntMap.size; i++)
+	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < huntMap.size; j++)
+		for (int j = 0; j < size; j++)
 		{
 			cout << grid[i][j].track << " ";
 		}
@@ -199,6 +198,23 @@ void game::sail()
 		//cout << "	Water tiles discovered: " << waterCount << "\n";
 
 	} // while loop
+}
+
+bool game::checkSail(bool isCaptain, Point pos)
+{
+	if (pos.track != 'M')
+	{
+		return false;
+	}
+	else if (pos.type == '#')
+	{
+		return false;
+	}
+	else if (!isCaptain && pos.type != 'o' && pos.type != '$')
+	{
+		return false;
+	}
+	return true;
 }
 
 
@@ -257,7 +273,7 @@ void game::searchInvestigate()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (order[i] == 'n' && searchPos.row != 0 && huntMap.checkSail(isCaptain, grid[searchPos.row - 1][searchPos.col]))
+		if (order[i] == 'n' && searchPos.row != 0 && checkSail(isCaptain, grid[searchPos.row - 1][searchPos.col]))
 		{
 			if (grid[searchPos.row - 1][searchPos.col].type == '$')
 			{
@@ -275,7 +291,7 @@ void game::searchInvestigate()
 			search_box.push_back(newPos);
 			grid[searchPos.row - 1][searchPos.col].track = 'n';
 		}
-		else if (order[i] == 'e' && searchPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[searchPos.row][searchPos.col + 1]))
+		else if (order[i] == 'e' && searchPos.col != size - 1 && checkSail(isCaptain, grid[searchPos.row][searchPos.col + 1]))
 		{
 			if (grid[searchPos.row][searchPos.col + 1].type == '$')
 			{
@@ -293,7 +309,7 @@ void game::searchInvestigate()
 			search_box.push_back(newPos);
 			grid[searchPos.row][searchPos.col + 1].track = 'e';
 		}
-		else if (order[i] == 's' && searchPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[searchPos.row + 1][searchPos.col]))
+		else if (order[i] == 's' && searchPos.row != size - 1 && checkSail(isCaptain, grid[searchPos.row + 1][searchPos.col]))
 		{
 			if (grid[searchPos.row + 1][searchPos.col].type == '$')
 			{
@@ -312,7 +328,7 @@ void game::searchInvestigate()
 			grid[searchPos.row + 1][searchPos.col].track = 's';
 
 		}
-		else if (order[i] == 'w' && searchPos.col != 0 && huntMap.checkSail(isCaptain, grid[searchPos.row][searchPos.col - 1]))
+		else if (order[i] == 'w' && searchPos.col != 0 && checkSail(isCaptain, grid[searchPos.row][searchPos.col - 1]))
 		{
 			if (grid[searchPos.row][searchPos.col - 1].type == '$')
 			{
@@ -339,7 +355,7 @@ void game::sailInvestigate()
 	bool landFound = false;
 	for (int i = 0; i < 4; i++)
 	{
-		if (order[i] == 'n' && sailPos.row != 0 && huntMap.checkSail(isCaptain, grid[sailPos.row - 1][sailPos.col]))
+		if (order[i] == 'n' && sailPos.row != 0 && checkSail(isCaptain, grid[sailPos.row - 1][sailPos.col]))
 		{
 			if ((grid[sailPos.row - 1][sailPos.col].type == 'o' && !landFound) || (grid[sailPos.row - 1][sailPos.col].type == '$' && !landFound))
 			{
@@ -360,7 +376,7 @@ void game::sailInvestigate()
 				grid[sailPos.row - 1][sailPos.col].track = 'n';
 			}
 		}
-		if (order[i] == 'e' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[sailPos.row][sailPos.col + 1]))
+		if (order[i] == 'e' && sailPos.col != size - 1 && checkSail(isCaptain, grid[sailPos.row][sailPos.col + 1]))
 		{
 			if ((grid[sailPos.row][sailPos.col + 1].type == 'o' && !landFound) || (grid[sailPos.row][sailPos.col + 1].type == '$' && !landFound))
 			{
@@ -381,7 +397,7 @@ void game::sailInvestigate()
 				grid[sailPos.row][sailPos.col + 1].track = 'e';
 			}
 		}
-		if (order[i] == 's' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[sailPos.row + 1][sailPos.col]))
+		if (order[i] == 's' && sailPos.row != size - 1 && checkSail(isCaptain, grid[sailPos.row + 1][sailPos.col]))
 		{
 			if ((grid[sailPos.row + 1][sailPos.col].type == 'o' && !landFound) || (grid[sailPos.row + 1][sailPos.col].type == '$' && !landFound))
 			{
@@ -402,7 +418,7 @@ void game::sailInvestigate()
 				grid[sailPos.row + 1][sailPos.col].track = 's';
 			}
 		}
-		if (order[i] == 'w' && sailPos.col != 0 && huntMap.checkSail(isCaptain, grid[sailPos.row][sailPos.col - 1]))
+		if (order[i] == 'w' && sailPos.col != 0 && checkSail(isCaptain, grid[sailPos.row][sailPos.col - 1]))
 		{
 			if ((grid[sailPos.row][sailPos.col - 1].type == 'o' && !landFound) || (grid[sailPos.row][sailPos.col - 1].type == '$' && !landFound))
 			{

@@ -144,14 +144,14 @@ options getMode(int argc, char * argv[]) {
 
 int main(int argc, char* argv[])
 {
-	//std::ios_base::sync_with_stdio(false);
+	std::ios_base::sync_with_stdio(false);
 
 	// store options in a struct and initiliaze classes with given options
 	options mode = getMode(argc, argv);
 	map map;
 	map.read_in();
 	//cout << mode.order[0] << mode.order[1] << mode.order[2] << mode.order[3] << "\n";
-	game hunt(mode, map);
+	game hunt(mode, map.grid, map.startPos, map.treasurePos, map.size);
 	//cout << "Treasure position: " << map.treasurePos.row << map.treasurePos.col << endl;
 
 	if (mode.verbose)

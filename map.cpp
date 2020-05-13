@@ -119,22 +119,7 @@ void map::list_helper()
 	}
 }
 
-bool map::checkSail(bool isCaptain, Point pos)
-{
-	if (pos.track != 'M')
-	{
-		return false;
-	}
-	else if (pos.type == '#')
-	{
-		return false;
-	}
-	else if (!isCaptain && pos.type != 'o' && pos.type != '$')
-	{
-		return false;
-	}
-	return true;
-}
+
 
 
 

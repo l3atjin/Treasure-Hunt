@@ -29,7 +29,6 @@ class game
 {
 private:
 	vector<char> order;
-	map huntMap;
 	vector<vector <Point>> grid;
 	deque<Position> search_box;
 	deque<Position> sail_box;
@@ -43,6 +42,7 @@ private:
 	bool isStats;
 	bool showMap;
 	bool showList;
+	int size;
 
 public:
 	vector<Point> path;
@@ -54,7 +54,7 @@ public:
 	bool treasureFound = false;
 	bool deadend = false;
 	// game constructor
-	game(options& mode_in, map& map_in);
+	game(options& mode_in, vector<vector <Point>>& grid_in, Position startPos_in, Position treasurePos_in, int size_in);
 
 	void print_map();
 
@@ -71,5 +71,7 @@ public:
 	void printStats();
 
 	void path_helper();
+
+	bool checkSail(bool isCaptain, Point pos);
 };
 
