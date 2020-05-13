@@ -23,17 +23,20 @@ struct options
 	bool showList;
 };
 
+
+
 class game
 {
 private:
 	vector<char> order;
 	map huntMap;
-	deque<Point> search_box;
-	deque<Point> sail_box;
-	Point sailPos;
-	Point searchPos;
-	Point treasurePos;
-	Point startPos;
+	vector<vector <Point>> grid;
+	deque<Position> search_box;
+	deque<Position> sail_box;
+	Position sailPos;
+	Position searchPos;
+	Position treasurePos;
+	Position startPos;
 	bool isCStack;
 	bool isFStack;
 	bool isVerbose;
@@ -43,6 +46,7 @@ private:
 
 public:
 	vector<Point> path;
+	vector<Position> pathPos;
 	int islandCount = 0;
 	int waterCount = 1;
 	int landCount = 0;

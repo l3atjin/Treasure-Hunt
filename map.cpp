@@ -13,7 +13,7 @@
 using namespace std;
 
 
-map::map(){}
+map::map() {}
 
 void map::read_in()
 {
@@ -63,16 +63,17 @@ void map::map_helper()
 		for (unsigned int i = 0; i < temp.size(); i++)
 		{
 			Point in;
-			in.row = count;
-			in.col = i;
 			in.type = temp[i];
+			in.track = 'M';
 			if (temp[i] == '@')
 			{
-				startPos = in;
+				startPos.row = count;
+				startPos.col = i;
 			}
 			else if (temp[i] == '$')
 			{
-				treasurePos = in;
+				treasurePos.row = count;
+				treasurePos.col = i;
 			}
 			col.push_back(in);
 		}
@@ -84,8 +85,6 @@ void map::map_helper()
 void map::list_helper()
 {
 	Point junk;
-	junk.col = -1;
-	junk.row = -1;
 	junk.type = 'J';
 	vector<Point> junkVec(size, junk);
 	junkVec.reserve(size + 1);
@@ -93,17 +92,20 @@ void map::list_helper()
 	temp.reserve(size + 1);
 	grid = temp;
 	Point in;
-	while (cin >> in.row >> in.col >> in.type)
+	int rowTemp, colTemp;
+	while (cin >> rowTemp >> colTemp >> in.type)
 	{
 		if (in.type == '@')
 		{
-			startPos = in;
+			startPos.row = rowTemp;
+			startPos.col = colTemp;
 		}
 		else if (in.type == '$')
 		{
-			treasurePos = in;
+			treasurePos.row = rowTemp;
+			treasurePos.col = colTemp;
 		}
-		grid[in.row][in.col] = in;
+		grid[rowTemp][colTemp] = in;
 	}
 	for (int i = 0; i < size; i++)
 	{
@@ -111,8 +113,6 @@ void map::list_helper()
 		{
 			if (grid[i][j].type == 'J')
 			{
-				grid[i][j].row = i;
-				grid[i][j].col = j;
 				grid[i][j].type = '.';
 			}
 		}

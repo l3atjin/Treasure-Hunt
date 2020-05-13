@@ -11,32 +11,27 @@
 
 using namespace std;
 
-class Point
+struct Point
 {
-public:
-	int row, col;
 	char type;
 	char track = 'M';
+};
 
-	Point& operator=(const Point &rhs) {
-		row = rhs.row;
-		col = rhs.col;
-		type = rhs.type;
-		track = rhs.track;
-		return *this;
-	}
+struct Position
+{
+	int row, col;
 };
 
 class map
 {
 private:
 	char mapType;
-	
+
 
 public:
 	vector<vector <Point>> grid;
-	Point startPos;
-	Point treasurePos;
+	Position startPos;
+	Position treasurePos;
 	int size;
 
 	//constructor

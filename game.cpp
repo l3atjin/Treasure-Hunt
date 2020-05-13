@@ -7,14 +7,17 @@ using namespace std;
 // game constructor
 game::game(options& mode_in, map& map_in)
 	: order(mode_in.order), huntMap(map_in),
-	treasurePos(map_in.treasurePos), 
-	startPos(map_in.startPos), isCStack(mode_in.isCStack), 
+	grid(huntMap.grid),
+	treasurePos(map_in.treasurePos),
+	startPos(map_in.startPos), isCStack(mode_in.isCStack),
 	isFStack(!mode_in.isFQueue), isVerbose(mode_in.verbose),
 	isStats(mode_in.stats), showMap(mode_in.showMap), showList(mode_in.showList)
 {
-	treasurePos.track = '$';
+	//treasurePos.track = '$';
+	//grid[treasurePos.row][treasurePos.col].track = '$';
+	huntMap.at(treasurePos.row, treasurePos.col).track = '$';
 	sailPos = startPos;
-	sailPos.track = '@';
+	grid[sailPos.row][sailPos.col].track = '@';
 	huntMap.at(sailPos.row, sailPos.col).track = '@';
 }
 
@@ -38,61 +41,71 @@ void game::printStats()
 
 void game::path_helper()
 {
-	Point currentPos = huntMap.at(treasurePos.row, treasurePos.col);
+	Point currentPoint = grid[treasurePos.row][treasurePos.col];
+	Position currentPos;
+	currentPos.row = treasurePos.row;
+	currentPos.col = treasurePos.col;
+	pathPos.push_back(currentPos);
+
 	int count = 0;
-	path.push_back(currentPos);
-	while (currentPos.type != '@')
+	path.push_back(currentPoint);
+	while (currentPoint.type != '@')
 	{
 		//cout << path.at(count).type << "\n";
-		if (currentPos.track == 'n')
+		if (currentPoint.track == 'n')
 		{
 			if (count > 0 && (path.at(count - 1).track == 'w' || path.at(count - 1).track == 'e'))
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '+';
+				grid[currentPos.row][currentPos.col].type = '+';
 			}
 			else
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '|';
+				grid[currentPos.row][currentPos.col].type = '|';
 			}
-			currentPos = huntMap.at(currentPos.row + 1, currentPos.col);
+			currentPoint = grid[currentPos.row + 1][currentPos.col];
+			currentPos.row = currentPos.row + 1;
 		}
-		else if (currentPos.track == 'e')
+		else if (currentPoint.track == 'e')
 		{
 			if (count > 0 && (path.at(count - 1).track == 'n' || path.at(count - 1).track == 's'))
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '+';
+				grid[currentPos.row][currentPos.col].type = '+';
 			}
 			else
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '-';;
+				grid[currentPos.row][currentPos.col].type = '-';
 			}
-			currentPos = huntMap.at(currentPos.row, currentPos.col - 1);
+			currentPoint = grid[currentPos.row][currentPos.col - 1];
+			currentPos.col = currentPos.col - 1;
 		}
-		else if (currentPos.track == 's')
+		else if (currentPoint.track == 's')
 		{
 			if (count > 0 && (path.at(count - 1).track == 'w' || path.at(count - 1).track == 'e'))
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '+';
+				grid[currentPos.row][currentPos.col].type = '+';
 			}
 			else
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '|';
+				grid[currentPos.row][currentPos.col].type = '|';
 			}
-			currentPos = huntMap.at(currentPos.row - 1, currentPos.col);
+			currentPoint = grid[currentPos.row - 1][currentPos.col];
+			currentPos.row = currentPos.row - 1;
 		}
-		else if (currentPos.track == 'w')
+		else if (currentPoint.track == 'w')
 		{
 			if (count > 0 && (path.at(count - 1).track == 'n' || path.at(count - 1).track == 's'))
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '+';
+				grid[currentPos.row][currentPos.col].type = '+';
 			}
 			else
 			{
-				huntMap.at(currentPos.row, currentPos.col).type = '-';
+				grid[currentPos.row][currentPos.col].type = '-';
 			}
-			currentPos = huntMap.at(currentPos.row, currentPos.col + 1);
+			currentPoint = grid[currentPos.row][currentPos.col + 1];
+			currentPos.col = currentPos.col + 1;
 		}
-		path.push_back(currentPos);
+		path.push_back(currentPoint);
+		pathPos.push_back(currentPos);
 		count++;
 	}
 }
@@ -101,17 +114,17 @@ void game::print_path()
 {
 	if (!isStats)
 	{
-		path_helper();	
+		path_helper();
 	}
 	//cout << path.size() << "\n";
 	if (showMap)
-	{	
-		huntMap.at(treasurePos.row, treasurePos.col).type = 'X';
+	{
+		grid[treasurePos.row][treasurePos.col].type = 'X';
 		for (int i = 0; i < huntMap.size; i++)
 		{
 			for (int j = 0; j < huntMap.size; j++)
 			{
-				cout << huntMap.grid[i][j].type;
+				cout << grid[i][j].type;
 			}
 			cout << "\n";
 		}
@@ -123,7 +136,7 @@ void game::print_path()
 		{
 			if (path[i].type == '.' || path[i].type == '@')
 			{
-				cout << path[i].row << "," << path[i].col << "\n";
+				cout << pathPos[i].row << "," << pathPos[i].col << "\n";
 			}
 		}
 		// might wanna check
@@ -132,10 +145,10 @@ void game::print_path()
 		{
 			if (path[i].type == 'o' || path[i].type == '$')
 			{
-				cout << path[i].row << "," << path[i].col << "\n";
+				cout << pathPos[i].row << "," << pathPos[i].col << "\n";
 			}
 		}
-		cout << path[0].row << "," << path[0].col << "\n";
+		cout << pathPos[0].row << "," << pathPos[0].col << "\n";
 	}
 }
 
@@ -147,7 +160,7 @@ void game::print_map()
 	{
 		for (int j = 0; j < huntMap.size; j++)
 		{
-			cout << huntMap.grid[i][j].track << " ";
+			cout << grid[i][j].track << " ";
 		}
 		cout << "\n";
 	}
@@ -182,9 +195,9 @@ void game::sail()
 			sailPos = sail_box.front();
 			sail_box.pop_front();
 		}
-		//cout << "	Sail position: " << sailPos.row << "," << sailPos.col << "\n";
+		//cout << "Sail position: " << sailPos.row << "," << sailPos.col << "\n";
 		//cout << "	Water tiles discovered: " << waterCount << "\n";
-		
+
 	} // while loop
 }
 
@@ -234,8 +247,8 @@ void game::search()
 			treasureFound = true;
 			return;
 		}
-		
-		//cout << "	Search position: " << searchPos.row << "," << searchPos.col << "\n";
+
+		//cout << "Search position: " << searchPos.row << "," << searchPos.col << "\n";
 		//cout << "	Land tiles discovered: " << landCount << "\n";
 	}
 }
@@ -244,55 +257,79 @@ void game::searchInvestigate()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (order[i] == 'n' && searchPos.row != 0 && huntMap.checkSail(isCaptain, huntMap.at(searchPos.row - 1, searchPos.col)))
+		if (order[i] == 'n' && searchPos.row != 0 && huntMap.checkSail(isCaptain, grid[searchPos.row - 1][searchPos.col]))
 		{
-			if (huntMap.at(searchPos.row - 1, searchPos.col).type == '$')
+			if (grid[searchPos.row - 1][searchPos.col].type == '$')
 			{
 				treasureFound = true;
-				search_box.push_back(huntMap.at(searchPos.row - 1, searchPos.col));
-				huntMap.at(searchPos.row - 1, searchPos.col).track = 'n';
+				Position newPos;
+				newPos.row = searchPos.row - 1;
+				newPos.col = searchPos.col;
+				search_box.push_back(newPos);
+				grid[searchPos.row - 1][searchPos.col].track = 'n';
 				return;
 			}
-			search_box.push_back(huntMap.at(searchPos.row - 1, searchPos.col));
-			huntMap.at(searchPos.row - 1, searchPos.col).track = 'n';
+			Position newPos;
+			newPos.row = searchPos.row - 1;
+			newPos.col = searchPos.col;
+			search_box.push_back(newPos);
+			grid[searchPos.row - 1][searchPos.col].track = 'n';
 		}
-		else if (order[i] == 'e' && searchPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(searchPos.row, searchPos.col + 1)))
+		else if (order[i] == 'e' && searchPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[searchPos.row][searchPos.col + 1]))
 		{
-			if (huntMap.at(searchPos.row, searchPos.col + 1).type == '$')
+			if (grid[searchPos.row][searchPos.col + 1].type == '$')
 			{
 				treasureFound = true;
-				search_box.push_back(huntMap.at(searchPos.row, searchPos.col + 1));
-				huntMap.at(searchPos.row, searchPos.col + 1).track = 'e';
+				Position newPos;
+				newPos.row = searchPos.row;
+				newPos.col = searchPos.col + 1;
+				search_box.push_back(newPos);
+				grid[searchPos.row][searchPos.col + 1].track = 'e';
 				return;
 			}
-			search_box.push_back(huntMap.at(searchPos.row, searchPos.col + 1));
-			huntMap.at(searchPos.row, searchPos.col + 1).track = 'e';
+			Position newPos;
+			newPos.row = searchPos.row;
+			newPos.col = searchPos.col + 1;
+			search_box.push_back(newPos);
+			grid[searchPos.row][searchPos.col + 1].track = 'e';
 		}
-		else if (order[i] == 's' && searchPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(searchPos.row + 1, searchPos.col)))
+		else if (order[i] == 's' && searchPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[searchPos.row + 1][searchPos.col]))
 		{
-			if (huntMap.at(searchPos.row + 1, searchPos.col).type == '$')
+			if (grid[searchPos.row + 1][searchPos.col].type == '$')
 			{
 				treasureFound = true;
-				search_box.push_back(huntMap.at(searchPos.row + 1, searchPos.col));
-				huntMap.at(searchPos.row + 1, searchPos.col).track = 's';
+				Position newPos;
+				newPos.row = searchPos.row + 1;
+				newPos.col = searchPos.col;
+				search_box.push_back(newPos);
+				grid[searchPos.row + 1][searchPos.col].track = 's';
 				return;
 			}
-			search_box.push_back(huntMap.at(searchPos.row + 1, searchPos.col));
-			huntMap.at(searchPos.row + 1, searchPos.col).track = 's';
-			
+			Position newPos;
+			newPos.row = searchPos.row + 1;
+			newPos.col = searchPos.col;
+			search_box.push_back(newPos);
+			grid[searchPos.row + 1][searchPos.col].track = 's';
+
 		}
-		else if (order[i] == 'w' && searchPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(searchPos.row, searchPos.col - 1)))
+		else if (order[i] == 'w' && searchPos.col != 0 && huntMap.checkSail(isCaptain, grid[searchPos.row][searchPos.col - 1]))
 		{
-			if (huntMap.at(searchPos.row, searchPos.col - 1).type == '$')
+			if (grid[searchPos.row][searchPos.col - 1].type == '$')
 			{
 				treasureFound = true;
-				search_box.push_back(huntMap.at(searchPos.row, searchPos.col - 1));
-				huntMap.at(searchPos.row, searchPos.col - 1).track = 'w';
+				Position newPos;
+				newPos.row = searchPos.row;
+				newPos.col = searchPos.col - 1;
+				search_box.push_back(newPos);
+				grid[searchPos.row][searchPos.col - 1].track = 'w';
 				return;
 			}
-			search_box.push_back(huntMap.at(searchPos.row, searchPos.col - 1));
-			huntMap.at(searchPos.row, searchPos.col - 1).track = 'w';
-			
+			Position newPos;
+			newPos.row = searchPos.row;
+			newPos.col = searchPos.col - 1;
+			search_box.push_back(newPos);
+			grid[searchPos.row][searchPos.col - 1].track = 'w';
+
 		} // end of if statements
 	} // for loop
 }
@@ -302,66 +339,89 @@ void game::sailInvestigate()
 	bool landFound = false;
 	for (int i = 0; i < 4; i++)
 	{
-		if (order[i] == 'n' && sailPos.row != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row - 1, sailPos.col)))
+		if (order[i] == 'n' && sailPos.row != 0 && huntMap.checkSail(isCaptain, grid[sailPos.row - 1][sailPos.col]))
 		{
-			if ((huntMap.at(sailPos.row - 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row - 1, sailPos.col).type == '$' && !landFound))
+			if ((grid[sailPos.row - 1][sailPos.col].type == 'o' && !landFound) || (grid[sailPos.row - 1][sailPos.col].type == '$' && !landFound))
 			{
-				search_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
-				searchPos = huntMap.at(sailPos.row - 1, sailPos.col);
-				huntMap.at(sailPos.row - 1, sailPos.col).track = 'n';
+				Position newPos;
+				newPos.row = sailPos.row - 1;
+				newPos.col = sailPos.col;
+				search_box.push_back(newPos);
+				grid[sailPos.row - 1][sailPos.col].track = 'n';
 				landFound = true;
+				searchPos = newPos;
 			}
-			else if(huntMap.at(sailPos.row - 1, sailPos.col).type == '.')
+			else if (grid[sailPos.row - 1][sailPos.col].type == '.')
 			{
-				sail_box.push_back(huntMap.at(sailPos.row - 1, sailPos.col));
-				huntMap.at(sailPos.row - 1, sailPos.col).track = 'n';
+				Position newPos;
+				newPos.row = sailPos.row - 1;
+				newPos.col = sailPos.col;
+				sail_box.push_back(newPos);
+				grid[sailPos.row - 1][sailPos.col].track = 'n';
 			}
 		}
-		if (order[i] == 'e' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col + 1)))
+		if (order[i] == 'e' && sailPos.col != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[sailPos.row][sailPos.col + 1]))
 		{
-			if ((huntMap.at(sailPos.row, sailPos.col + 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col + 1).type == '$' && !landFound))
+			if ((grid[sailPos.row][sailPos.col + 1].type == 'o' && !landFound) || (grid[sailPos.row][sailPos.col + 1].type == '$' && !landFound))
 			{
-				search_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
-				searchPos = huntMap.at(sailPos.row, sailPos.col + 1);
-				huntMap.at(sailPos.row, sailPos.col + 1).track = 'e';
+				Position newPos;
+				newPos.row = sailPos.row;
+				newPos.col = sailPos.col + 1;
+				search_box.push_back(newPos);
+				grid[sailPos.row][sailPos.col + 1].track = 'e';
 				landFound = true;
+				searchPos = newPos;
 			}
-			else if(huntMap.at(sailPos.row, sailPos.col + 1).type == '.')
+			else if (grid[sailPos.row][sailPos.col + 1].type == '.')
 			{
-				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col + 1));
-				huntMap.at(sailPos.row, sailPos.col + 1).track = 'e';
+				Position newPos;
+				newPos.row = sailPos.row;
+				newPos.col = sailPos.col + 1;
+				sail_box.push_back(newPos);
+				grid[sailPos.row][sailPos.col + 1].track = 'e';
 			}
 		}
-		if (order[i] == 's' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row + 1, sailPos.col)))
+		if (order[i] == 's' && sailPos.row != huntMap.size - 1 && huntMap.checkSail(isCaptain, grid[sailPos.row + 1][sailPos.col]))
 		{
-			if ((huntMap.at(sailPos.row + 1, sailPos.col).type == 'o' && !landFound) || (huntMap.at(sailPos.row + 1, sailPos.col).type == '$' && !landFound))
+			if ((grid[sailPos.row + 1][sailPos.col].type == 'o' && !landFound) || (grid[sailPos.row + 1][sailPos.col].type == '$' && !landFound))
 			{
-				search_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
-				searchPos = huntMap.at(sailPos.row + 1, sailPos.col);
-				huntMap.at(sailPos.row + 1, sailPos.col).track = 's';
+				Position newPos;
+				newPos.row = sailPos.row + 1;
+				newPos.col = sailPos.col;
+				search_box.push_back(newPos);
+				grid[sailPos.row + 1][sailPos.col].track = 's';
 				landFound = true;
+				searchPos = newPos;
 			}
-			else if(huntMap.at(sailPos.row + 1, sailPos.col).type == '.')
+			else if (grid[sailPos.row + 1][sailPos.col].type == '.')
 			{
-				sail_box.push_back(huntMap.at(sailPos.row + 1, sailPos.col));
-				huntMap.at(sailPos.row + 1, sailPos.col).track = 's';
+				Position newPos;
+				newPos.row = sailPos.row + 1;
+				newPos.col = sailPos.col;
+				sail_box.push_back(newPos);
+				grid[sailPos.row + 1][sailPos.col].track = 's';
 			}
 		}
-		if (order[i] == 'w' && sailPos.col != 0 && huntMap.checkSail(isCaptain, huntMap.at(sailPos.row, sailPos.col - 1)))
+		if (order[i] == 'w' && sailPos.col != 0 && huntMap.checkSail(isCaptain, grid[sailPos.row][sailPos.col - 1]))
 		{
-			if ((huntMap.at(sailPos.row, sailPos.col - 1).type == 'o' && !landFound) || (huntMap.at(sailPos.row, sailPos.col - 1).type == '$' && !landFound))
+			if ((grid[sailPos.row][sailPos.col - 1].type == 'o' && !landFound) || (grid[sailPos.row][sailPos.col - 1].type == '$' && !landFound))
 			{
-				search_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
-				searchPos = huntMap.at(sailPos.row, sailPos.col - 1);
-				huntMap.at(sailPos.row, sailPos.col - 1).track = 'w';
+				Position newPos;
+				newPos.row = sailPos.row;
+				newPos.col = sailPos.col - 1;
+				search_box.push_back(newPos);
+				grid[sailPos.row][sailPos.col - 1].track = 'w';
 				landFound = true;
+				searchPos = newPos;
 			}
-			else if(huntMap.at(sailPos.row, sailPos.col - 1).type == '.')
+			else if (grid[sailPos.row][sailPos.col - 1].type == '.')
 			{
-				sail_box.push_back(huntMap.at(sailPos.row, sailPos.col - 1));
-				huntMap.at(sailPos.row, sailPos.col - 1).track = 'w';
+				Position newPos;
+				newPos.row = sailPos.row;
+				newPos.col = sailPos.col - 1;
+				sail_box.push_back(newPos);
+				grid[sailPos.row][sailPos.col - 1].track = 'w';
 			}
-			
 		} // end of if statements
 	} // for loop
 	if (landFound)

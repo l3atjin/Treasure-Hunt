@@ -60,7 +60,7 @@ options getMode(int argc, char * argv[]) {
 			{
 				cout << "Wrong captain input" << "\n";
 				exit(1);
-			}	
+			}
 			else if (str == "queue")
 			{
 				gameOptions.isCStack = false;
@@ -134,7 +134,7 @@ options getMode(int argc, char * argv[]) {
 		default:
 			cerr << "Error: invalid option" << endl;
 			exit(1);
-		 // switch
+			// switch
 		} // switch
 	} // while
 
@@ -152,15 +152,16 @@ int main(int argc, char* argv[])
 	map.read_in();
 	//cout << mode.order[0] << mode.order[1] << mode.order[2] << mode.order[3] << "\n";
 	game hunt(mode, map);
-
+	//cout << "Treasure position: " << map.treasurePos.row << map.treasurePos.col << endl;
 
 	if (mode.verbose)
 	{
 		cout << "Treasure hunt started at: " << map.startPos.row << "," << map.startPos.col << "\n";
 	}
-	
+
 	// The main while loop
-	while (!hunt.treasureFound &&!hunt.deadend)
+	//hunt.print_map();
+	while (!hunt.treasureFound && !hunt.deadend)
 	{
 		//cout << "entered main loop" << endl;
 		hunt.sail();
