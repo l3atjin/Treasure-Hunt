@@ -165,14 +165,6 @@ int main(int argc, char* argv[])
 	{
 		//cout << "entered main loop" << endl;
 		hunt.sail();
-		if (hunt.deadend)
-		{
-			break;
-		}
-		if (!hunt.isCaptain)
-		{
-			hunt.search();
-		}
 	}
 	//hunt.conTest();
 	if (mode.stats)

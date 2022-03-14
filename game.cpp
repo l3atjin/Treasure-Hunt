@@ -5,7 +5,7 @@
 using namespace std;
 
 // game constructor
-game::game(options& mode_in, vector<vector <Point>>& grid_in, Position startPos_in, Position treasurePos_in, int size_in)
+game::game(options& mode_in, vector<vector <Point>>& grid_in, Position& startPos_in, Position& treasurePos_in, int& size_in)
 	: order(mode_in.order), grid(grid_in),
 	treasurePos(treasurePos_in),
 	startPos(startPos_in), isCStack(mode_in.isCStack),
@@ -167,11 +167,21 @@ void game::print_map()
 
 void game::sail()
 {
+	deque<Position> sail_box;
+	deque<Position> search_box;
 	while (isCaptain && !treasureFound) {
-		sailInvestigate();
+		sailInvestigate(sail_box, search_box);
 		if (!isCaptain)
 		{
-			return;
+			search(search_box);
+			if (treasureFound)
+			{
+				return;
+			}
+			else if (isCaptain)
+			{
+				continue;
+			}
 		}
 		if (sail_box.empty())
 		{
@@ -200,7 +210,7 @@ void game::sail()
 	} // while loop
 }
 
-bool game::checkSail(bool isCaptain, Point pos)
+bool game::checkSail(bool& isCaptain, Point& pos)
 {
 	if (pos.track != 'M')
 	{
@@ -218,7 +228,7 @@ bool game::checkSail(bool isCaptain, Point pos)
 }
 
 
-void game::search()
+void game::search(deque<Position>& search_box)
 {
 	// declare deque here
 	while (!isCaptain && !treasureFound)
@@ -232,7 +242,7 @@ void game::search()
 			treasureFound = true;
 			return;
 		}
-		searchInvestigate();
+		searchInvestigate(search_box);
 		if (search_box.empty())
 		{
 			isCaptain = true;
@@ -269,7 +279,7 @@ void game::search()
 	}
 }
 
-void game::searchInvestigate()
+void game::searchInvestigate(deque<Position>& search_box)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -350,7 +360,7 @@ void game::searchInvestigate()
 	} // for loop
 }
 
-void game::sailInvestigate()
+void game::sailInvestigate(deque<Position>& sail_box, deque<Position>& search_box)
 {
 	bool landFound = false;
 	for (int i = 0; i < 4; i++)

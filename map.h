@@ -20,6 +20,7 @@ struct Point
 struct Position
 {
 	int row, col;
+
 };
 
 class map

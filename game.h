@@ -30,8 +30,8 @@ class game
 private:
 	vector<char> order;
 	vector<vector <Point>> grid;
-	deque<Position> search_box;
-	deque<Position> sail_box;
+	//deque<Position> search_box;
+	//deque<Position> sail_box;
 	Position sailPos;
 	Position searchPos;
 	Position treasurePos;
@@ -54,17 +54,17 @@ public:
 	bool treasureFound = false;
 	bool deadend = false;
 	// game constructor
-	game(options& mode_in, vector<vector <Point>>& grid_in, Position startPos_in, Position treasurePos_in, int size_in);
+	game(options& mode_in, vector<vector <Point>>& grid_in, Position& startPos_in, Position& treasurePos_in, int& size_in);
 
 	void print_map();
 
 	void sail();
 
-	void search();
+	void search(deque<Position>& search_box);
 
-	void sailInvestigate();
+	void sailInvestigate(deque<Position>& sail_box, deque<Position>& search_box);
 
-	void searchInvestigate();
+	void searchInvestigate(deque<Position>& search_box);
 
 	void print_path();
 
@@ -72,6 +72,6 @@ public:
 
 	void path_helper();
 
-	bool checkSail(bool isCaptain, Point pos);
+	bool checkSail(bool& isCaptain, Point& pos);
 };
 
